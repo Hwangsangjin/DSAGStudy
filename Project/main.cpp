@@ -2,13 +2,14 @@
 
 using namespace std;
 
+template <typename T>
 class DynamicArray
 {
 public:
 	DynamicArray(int N)
 		: Size(N)
 	{
-		Ptr = new int[Size] {};
+		Ptr = new T[Size] {};
 	};
 
 	~DynamicArray()
@@ -18,8 +19,8 @@ public:
 	}
 
 	unsigned int size() { return Size; }
-	int& operator[] (const int i) { return Ptr[i]; }
-	const int& operator[] (const int i) const { return Ptr[i]; }
+	T& operator[] (const int i) { return Ptr[i]; }
+	const T& operator[] (const int i) const { return Ptr[i]; }
 
 private:
 	unsigned int Size;
@@ -28,7 +29,7 @@ private:
 
 int main()
 {
-	DynamicArray DA(5);
+	DynamicArray<int> DA(5);
 	DA[0] = 10;
 	DA[1] = 20;
 	DA[2] = 30;

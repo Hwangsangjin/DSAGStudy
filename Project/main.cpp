@@ -2,21 +2,59 @@
 
 using namespace std;
 
+template <typename T>
 struct Node
 {
-	int Data;
+	T Data;
 	Node* Prev;
 	Node* Next;
 };
 
+template <typename T>
 class DoublyLinkedList
 {
 public:
+	class iterator
+	{
+	public:
+		iterator() : Ptr(nullptr) {}
+		iterator(Node<T>* p) : Ptr(p) {}
+
+		T& operator*() { return Ptr->Data; }
+
+		iterator& operator++()
+		{
+			Ptr = Ptr->Next;
+			return *this;
+		}
+
+		iterator& operator--()
+		{
+			Ptr = Ptr->Prev;
+			return *this;
+		}
+
+		bool operator==(const iterator& iter) const
+		{
+			return Ptr == iter.Ptr;
+		}
+
+		bool operator!=(const iterator& iter) const
+		{
+			return Ptr != iter.Ptr;
+		}
+
+		friend class DoublyLinkedList;
+
+	private:
+		Node<T>* Ptr;
+	};
+
 	DoublyLinkedList()
 		: Count(0)
 	{
-		Header = new Node{ 0, nullptr, nullptr };
-		Trailer = new Node{ 0, nullptr, nullptr };
+		Header = new Node<T>{ T(), nullptr, nullptr};
+		Trailer = new Node<T>{ T(), nullptr, nullptr};
 
 		Header->Next = Trailer;
 		Trailer->Prev = Header;
@@ -35,26 +73,38 @@ public:
 		Trailer = nullptr;
 	}
 
-	void insert(Node* Ptr, int Value)
+	iterator begin() const
 	{
-		Node* NewNode = new Node{ Value, Ptr->Prev, Ptr };
+		return iterator(Header->Next);
+	}
+
+	iterator end() const
+	{
+		return iterator(Trailer);
+	}
+
+	void insert(const iterator& iter, const T& value)
+	{
+		Node<T>* Ptr = iter.Ptr;
+		Node<T>* NewNode = new Node<T>{ value, Ptr->Prev, Ptr };
 		NewNode->Prev->Next = NewNode;
 		NewNode->Next->Prev = NewNode;
 		Count++;
 	}
 
-	void push_front(int Value)
+	void push_front(const T& value)
 	{
-		insert(Header->Next, Value);
+		insert(begin(), value);
 	}
 
-	void push_back(int Value)
+	void push_back(const T& value)
 	{
-		insert(Trailer, Value);
+		insert(end(), value);
 	}
 
-	void erase(Node* Ptr)
+	void erase(const iterator& iter)
 	{
+		Node<T>* Ptr = iter.Ptr;
 		Ptr->Prev->Next = Ptr->Next;
 		Ptr->Next->Prev = Ptr->Prev;
 		delete Ptr;
@@ -66,7 +116,7 @@ public:
 	{
 		if (!empty())
 		{
-			erase(Header->Next);
+			erase(begin());
 		}
 	}
 
@@ -74,8 +124,19 @@ public:
 	{
 		if (!empty())
 		{
-			erase(Trailer->Prev);
+			erase(--end());
 		}
+	}
+
+	iterator find(const T& value)
+	{
+		Node<T>* Curr = Header->Next;
+		while (Curr->Data != value && Curr != Trailer)
+		{
+			Curr = Curr->Next;
+		}
+
+		return iterator(Curr);
 	}
 
 	bool empty() const
@@ -88,52 +149,30 @@ public:
 		return Count;
 	}
 
-	void print_all() const
-	{
-		Node* Curr = Header->Next;
-		while (Curr != Trailer)
-		{
-			cout << Curr->Data << " ";
-			Curr = Curr->Next;
-		}
-
-		cout << endl;
-	}
-
-	void print_reverse() const
-	{
-		Node* Curr = Trailer->Prev;
-		while (Curr != Header)
-		{
-			cout << Curr->Data << " ";
-			Curr = Curr->Prev;
-		}
-
-		cout << endl;
-	}
-
 private:
 	int Count;
-	Node* Header;
-	Node* Trailer;
+	Node<T>* Header;
+	Node<T>* Trailer;
 };
 
 int main()
 {
-	DoublyLinkedList DLL;
+	DoublyLinkedList<int> DLL;
 	DLL.push_back(10);
 	DLL.push_back(20);
 	DLL.push_back(30);
-	DLL.print_all();
-	DLL.print_reverse();
 
-	DLL.pop_front();
-	DLL.pop_back();
-	DLL.print_all();
+	auto Iter = DLL.find(20);
+	if (Iter != DLL.end())
+	{
+		DLL.insert(Iter, 50);
+	}
 
-	DLL.push_front(100);
-	DLL.push_back(400);
-	DLL.print_all();
+	for (const auto& i : DLL)
+	{
+		cout << i << " ";
+	}
+	cout << endl;
 
 	return 0;
 }

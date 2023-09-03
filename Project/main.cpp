@@ -1,57 +1,34 @@
 ﻿#include <iostream>
-#include <list>
+#include <forward_list>
 
 using namespace std;
 
 int main()
 {
-	list<int> L1;
-	L1.push_back(10);
-	L1.push_back(20);
+	forward_list<int> FL{ 10, 20, 30, 40 };
+	FL.push_front(40);
+	FL.push_front(30);
 
-	for (const auto& i : L1)
+	for (const auto& i : FL)
 	{
 		cout << i << " ";
 	}
 	cout << endl;
 
-	list<int> L2{ 10, 20, 30, 40 };
+	int Cnt = distance(FL.begin(), FL.end());
+	cout << Cnt << endl;
 
-	for (const auto& i : L2)
+	FL.remove(40);
+	FL.remove_if([](int N) { return N > 20; });
+
+	for (const auto& i : FL)
 	{
 		cout << i << " ";
 	}
 	cout << endl;
 
-	L2.splice(L2.end(), L1);
-
-	for (const auto& i : L1)
-	{
-		cout << i << " ";
-	}
-	cout << endl;
-
-	for (const auto& i : L2)
-	{
-		cout << i << " ";
-	}
-	cout << endl;
-
-	L2.sort();
-
-	for (const auto& i : L2)
-	{
-		cout << i << " ";
-	}
-	cout << endl;
-
-	L2.unique();
-
-	for (const auto& i : L2)
-	{
-		cout << i << " ";
-	}
-	cout << endl;
+	Cnt = distance(FL.begin(), FL.end());
+	cout << Cnt << endl;
 
 	return 0;
 }

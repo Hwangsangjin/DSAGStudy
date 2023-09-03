@@ -1,20 +1,23 @@
 ﻿#include <iostream>
-#include <array>
 
 using namespace std;
 
 int main()
 {
-	array<int, 5> Scores{ 50, 60, 70, 80, 90 };
-	int Sum = 0;
+	// 동적 배열 할당 및 초기화
+	int* Ptr = new int[3] {};
+	Ptr[0] = 10;
+	Ptr[1] = 20;
 
-	for (int i = 0; i < Scores.size(); i++)
+	// 포인터를 배열처럼 사용
+	for (int i = 0; i < 3; i++)
 	{
-		Sum += Scores[i];
+		std::cout << Ptr[i] << std::endl;
 	}
 
-	float Mean = static_cast<float>(Sum) / Scores.size();
-	cout << "Mean score: " << Mean << endl;
+	// 동적 배열 해제
+	delete[] Ptr;
+	Ptr = nullptr;
 
 	return 0;
 }

@@ -1,19 +1,19 @@
 ﻿#include <iostream>
+#include <array>
 
 using namespace std;
 
 int main()
 {
-	int Scores[5] = { 50, 60, 70, 80, 90 };
-	int Size = sizeof(Scores) / sizeof(Scores[0]);
+	array<int, 5> Scores{ 50, 60, 70, 80, 90 };
 	int Sum = 0;
 
-	for (int i = 0; i < Size; i++)
+	for (int i = 0; i < Scores.size(); i++)
 	{
 		Sum += Scores[i];
 	}
 
-	float Mean = (float)Sum / Size;
+	float Mean = static_cast<float>(Sum) / Scores.size();
 	cout << "Mean score: " << Mean << endl;
 
 	return 0;

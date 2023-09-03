@@ -1,39 +1,84 @@
 ﻿#include <iostream>
-#include <vector>
 
 using namespace std;
 
-int main()
+struct Node
 {
-	// 벡터 생성
-	vector<int> V1; // int 값을 저장할 비어 있는 벡터 생성
-	vector<int> V2(10); // int 값 10개를 저장할 벡터를 생성하고 0으로 초기화
-	vector<int> V3(10, 1); // int 값 10개를 저장할 벡터를 생성하고 1로 초기화
-	vector<int> V4{ 10, 20, 30, 40, 50 }; // 유니폼 초기화(uniform initialization)
-	vector<int> V5(V4); // V4를 복사하여 V5 생성
-	vector<int> V6(V4.begin(), V4.begin() + 3); // v4의 처음 3개 원소를 이용하여 v6 생성
+	int Data;
+	Node* Next;
+};
 
-	// 벡터 원소 참조
-	for (int i = 0; i < V6.size(); i++)
+class LinkedList
+{
+public:
+	LinkedList() : Head(nullptr) {};
+	~LinkedList()
 	{
-		cout << V6[i] << endl;
+		while (!empty())
+		{
+			pop_front();
+		}
 	}
 
-	// 정수형 2차원 배열. 2행 3열. 0으로 초기화
-	vector<vector<int>> Mat1(2, vector<int>(3, 0));
-
-	// 유니폼 초기화
-	vector<vector<int>> Mat2{ {1, 2, 3}, {4, 5, 6} };
-
-	// 2차원 벡터 출력
-	for (int r = 0; r < Mat2.size(); r++)
+	void push_front(int Value)
 	{
-		for (int c = 0; c < Mat2[r].size(); c++)
+		Node* NewNode = new Node{ Value, Head };
+
+		if (Head)
 		{
-			cout << Mat2[r][c] << " ";
+			NewNode->Next = Head;
 		}
+
+		Head = NewNode;
+	}
+
+	void pop_front()
+	{
+		if (!Head)
+		{
+			return;
+		}
+
+		Node* First = Head;
+		Head = Head->Next;
+		delete First;
+	}
+
+	bool empty() const
+	{
+		return Head == nullptr;
+	}
+
+	void print_all() const
+	{
+		Node* Curr = Head;
+
+		while (Curr)
+		{
+			cout << Curr->Data << " ";
+			Curr = Curr->Next;
+		}
+
 		cout << endl;
 	}
+
+private:
+	Node* Head;
+};
+
+int main()
+{
+	LinkedList LL;
+	LL.push_front(10);
+	LL.push_front(20);
+	LL.push_front(30);
+	LL.print_all();
+
+	LL.pop_front();
+	LL.print_all();
+
+	LL.push_front(40);
+	LL.print_all();
 
 	return 0;
 }

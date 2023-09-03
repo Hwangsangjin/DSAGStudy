@@ -5,55 +5,93 @@ using namespace std;
 struct Node
 {
 	int Data;
+	Node* Prev;
 	Node* Next;
 };
 
-class LinkedList
+class DoublyLinkedList
 {
 public:
-	LinkedList() : Head(nullptr) {};
-	~LinkedList()
+	DoublyLinkedList()
+		: Count(0)
+	{
+		Header = new Node{ 0, nullptr, nullptr };
+		Trailer = new Node{ 0, nullptr, nullptr };
+
+		Header->Next = Trailer;
+		Trailer->Prev = Header;
+	}
+
+	~DoublyLinkedList()
 	{
 		while (!empty())
 		{
 			pop_front();
 		}
+
+		delete Header;
+		Header = nullptr;
+		delete Trailer;
+		Trailer = nullptr;
+	}
+
+	void insert(Node* Ptr, int Value)
+	{
+		Node* NewNode = new Node{ Value, Ptr->Prev, Ptr };
+		NewNode->Prev->Next = NewNode;
+		NewNode->Next->Prev = NewNode;
+		Count++;
 	}
 
 	void push_front(int Value)
 	{
-		Node* NewNode = new Node{ Value, Head };
+		insert(Header->Next, Value);
+	}
 
-		if (Head)
-		{
-			NewNode->Next = Head;
-		}
+	void push_back(int Value)
+	{
+		insert(Trailer, Value);
+	}
 
-		Head = NewNode;
+	void erase(Node* Ptr)
+	{
+		Ptr->Prev->Next = Ptr->Next;
+		Ptr->Next->Prev = Ptr->Prev;
+		delete Ptr;
+		Ptr = nullptr;
+		Count--;
 	}
 
 	void pop_front()
 	{
-		if (!Head)
+		if (!empty())
 		{
-			return;
+			erase(Header->Next);
 		}
+	}
 
-		Node* First = Head;
-		Head = Head->Next;
-		delete First;
+	void pop_back()
+	{
+		if (!empty())
+		{
+			erase(Trailer->Prev);
+		}
 	}
 
 	bool empty() const
 	{
-		return Head == nullptr;
+		return Count == 0;
+	}
+
+	int size() const
+	{
+		return Count;
 	}
 
 	void print_all() const
 	{
-		Node* Curr = Head;
-
-		while (Curr)
+		Node* Curr = Header->Next;
+		while (Curr != Trailer)
 		{
 			cout << Curr->Data << " ";
 			Curr = Curr->Next;
@@ -62,23 +100,40 @@ public:
 		cout << endl;
 	}
 
+	void print_reverse() const
+	{
+		Node* Curr = Trailer->Prev;
+		while (Curr != Header)
+		{
+			cout << Curr->Data << " ";
+			Curr = Curr->Prev;
+		}
+
+		cout << endl;
+	}
+
 private:
-	Node* Head;
+	int Count;
+	Node* Header;
+	Node* Trailer;
 };
 
 int main()
 {
-	LinkedList LL;
-	LL.push_front(10);
-	LL.push_front(20);
-	LL.push_front(30);
-	LL.print_all();
+	DoublyLinkedList DLL;
+	DLL.push_back(10);
+	DLL.push_back(20);
+	DLL.push_back(30);
+	DLL.print_all();
+	DLL.print_reverse();
 
-	LL.pop_front();
-	LL.print_all();
+	DLL.pop_front();
+	DLL.pop_back();
+	DLL.print_all();
 
-	LL.push_front(40);
-	LL.print_all();
+	DLL.push_front(100);
+	DLL.push_back(400);
+	DLL.print_all();
 
 	return 0;
 }

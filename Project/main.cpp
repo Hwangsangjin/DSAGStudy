@@ -1,34 +1,44 @@
 ﻿#include <iostream>
-#include <forward_list>
+#include <vector>
 
 using namespace std;
 
+template <typename T>
+class Stack
+{
+public:
+	Stack() {}
+
+	void push(const T& e) { List.push_back(e); }
+	void pop() { List.pop_back(); }
+	const T& top() const { return List.back(); }
+
+	bool empty() const { return List.empty(); }
+	int size() const { return List.size(); }
+
+private:
+	vector<T> List;
+};
+
+
 int main()
 {
-	forward_list<int> FL{ 10, 20, 30, 40 };
-	FL.push_front(40);
-	FL.push_front(30);
+	Stack<int> STK;
+	STK.push(10);
+	STK.push(20);
+	STK.push(30);
+	STK.pop();
 
-	for (const auto& i : FL)
+	cout << STK.top() << endl;
+	STK.push(40);
+
+	while (!STK.empty())
 	{
-		cout << i << " ";
+		auto& e = STK.top();
+		cout << e << " ";
+		STK.pop();
 	}
 	cout << endl;
-
-	int Cnt = distance(FL.begin(), FL.end());
-	cout << Cnt << endl;
-
-	FL.remove(40);
-	FL.remove_if([](int N) { return N > 20; });
-
-	for (const auto& i : FL)
-	{
-		cout << i << " ";
-	}
-	cout << endl;
-
-	Cnt = distance(FL.begin(), FL.end());
-	cout << Cnt << endl;
 
 	return 0;
 }

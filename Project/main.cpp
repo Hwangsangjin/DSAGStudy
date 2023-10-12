@@ -1,33 +1,39 @@
 ﻿#include <iostream>
 #include <stack>
+#include <vector>
 
 using namespace std;
 
-string Reverse(const string& Str)
+template <typename T>
+void Reverse(vector<T>& Vec)
 {
-	stack<char> Stk;
-	for (char c : Str)
-	{
-		Stk.push(c);
-	}
+	stack<T, vector<T>> Stk(Vec);
 
-	string Result;
-	while (!Stk.empty())
+	/*stack<T> Stk;
+	for (const auto& e : Vec)
 	{
-		Result += Stk.top();
+		Stk.push(e);
+	}*/
+
+	for (int i = 0; i < Vec.size(); i++)
+	{
+		Vec[i] = Stk.top();
 		Stk.pop();
 	}
-
-	return Result;
 }
 
 int main()
 {
-	string Str1 = "HELLO";
-	string Str2 = "ALGORITHM";
+	//vector<int> Vec{ 10, 20, 30, 40, 50 };
+	vector<string> Vec{ "John", "loves", "Jane" };
 
-	cout << Str1 << " -> " << Reverse(Str1) << endl;
-	cout << Str2 << " -> " << Reverse(Str2) << endl;
+	//Reverse<int>(Vec);
+	Reverse<string>(Vec);
+
+	for (const auto& e : Vec)
+	{
+		cout << e << " ";
+	}
 
 	return 0;
 }

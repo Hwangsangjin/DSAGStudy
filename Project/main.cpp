@@ -3,24 +3,31 @@
 
 using namespace std;
 
+string Reverse(const string& Str)
+{
+	stack<char> Stk;
+	for (char c : Str)
+	{
+		Stk.push(c);
+	}
+
+	string Result;
+	while (!Stk.empty())
+	{
+		Result += Stk.top();
+		Stk.pop();
+	}
+
+	return Result;
+}
+
 int main()
 {
-	stack<int> STK;
-	STK.push(10);
-	STK.push(20);
-	STK.push(30);
-	STK.pop();
+	string Str1 = "HELLO";
+	string Str2 = "ALGORITHM";
 
-	cout << STK.top() << endl;
-	STK.push(40);
-
-	while (!STK.empty())
-	{
-		auto& e = STK.top();
-		cout << e << " ";
-		STK.pop();
-	}
-	cout << endl;
+	cout << Str1 << " -> " << Reverse(Str1) << endl;
+	cout << Str2 << " -> " << Reverse(Str2) << endl;
 
 	return 0;
 }

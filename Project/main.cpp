@@ -1,39 +1,46 @@
 ﻿#include <iostream>
 #include <stack>
-#include <vector>
 
 using namespace std;
 
-template <typename T>
-void Reverse(vector<T>& Vec)
+bool ParenCheck(const string& S)
 {
-	stack<T, vector<T>> Stk(Vec);
+	stack<char> Stk;
 
-	/*stack<T> Stk;
-	for (const auto& e : Vec)
+	for (const auto& c : S)
 	{
-		Stk.push(e);
-	}*/
+		if (c == '(' || c == '{' || c == '[')
+		{
+			Stk.push(c);
+		}
+		else
+		{
+			if (Stk.empty() ||
+				(Stk.top() == '(' && c != ')') ||
+				(Stk.top() == '{' && c != '}') ||
+				(Stk.top() == '[' && c != ']'))
+			{
+				return false;
+			}
 
-	for (int i = 0; i < Vec.size(); i++)
-	{
-		Vec[i] = Stk.top();
-		Stk.pop();
+			Stk.pop();
+		}
 	}
+
+	return Stk.empty();
 }
 
 int main()
 {
-	//vector<int> Vec{ 10, 20, 30, 40, 50 };
-	vector<string> Vec{ "John", "loves", "Jane" };
+	// 올바른 괄호
+	cout << ParenCheck("(){}[]") << endl;
+	cout << ParenCheck("((((()))))") << endl;
+	cout << ParenCheck("(){[()]}") << endl;
 
-	//Reverse<int>(Vec);
-	Reverse<string>(Vec);
-
-	for (const auto& e : Vec)
-	{
-		cout << e << " ";
-	}
+	// 올바르지 않은 괄호
+	cout << ParenCheck("((({}))") << endl;
+	cout << ParenCheck(")(") << endl;
+	cout << ParenCheck("({)}") << endl;
 
 	return 0;
 }

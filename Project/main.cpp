@@ -1,46 +1,42 @@
 ﻿#include <iostream>
-#include <stack>
+#include <list>
 
 using namespace std;
 
-bool ParenCheck(const string& S)
+template <typename T>
+class Queue
 {
-	stack<char> Stk;
+public:
+	Queue() {}
 
-	for (const auto& c : S)
-	{
-		if (c == '(' || c == '{' || c == '[')
-		{
-			Stk.push(c);
-		}
-		else
-		{
-			if (Stk.empty() ||
-				(Stk.top() == '(' && c != ')') ||
-				(Stk.top() == '{' && c != '}') ||
-				(Stk.top() == '[' && c != ']'))
-			{
-				return false;
-			}
+	void enqueue(const T& e) { list.push_back(e); }
+	void dequeue() { list.pop_front(); }
+	const T& front() const { return list.front(); }
 
-			Stk.pop();
-		}
-	}
+	bool empty() const { return list.empty(); }
+	int size() const { return list.size(); }
 
-	return Stk.empty();
-}
+private:
+	std::list<T> list;
+};
 
 int main()
 {
-	// 올바른 괄호
-	cout << ParenCheck("(){}[]") << endl;
-	cout << ParenCheck("((((()))))") << endl;
-	cout << ParenCheck("(){[()]}") << endl;
+	Queue<int> Q;
+	Q.enqueue(10);
+	Q.enqueue(20);
+	Q.enqueue(30);
+	Q.dequeue();
 
-	// 올바르지 않은 괄호
-	cout << ParenCheck("((({}))") << endl;
-	cout << ParenCheck(")(") << endl;
-	cout << ParenCheck("({)}") << endl;
+	cout << Q.front() << endl;
+	Q.enqueue(40);
+
+	while (!Q.empty())
+	{
+		const auto& e = Q.front();
+		cout << e << " ";
+		Q.dequeue();
+	}
 
 	return 0;
 }

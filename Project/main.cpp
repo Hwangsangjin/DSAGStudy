@@ -1,41 +1,24 @@
 ﻿#include <iostream>
-#include <list>
+#include <queue>
 
 using namespace std;
 
-template <typename T>
-class Queue
-{
-public:
-	Queue() {}
-
-	void enqueue(const T& e) { list.push_back(e); }
-	void dequeue() { list.pop_front(); }
-	const T& front() const { return list.front(); }
-
-	bool empty() const { return list.empty(); }
-	int size() const { return list.size(); }
-
-private:
-	std::list<T> list;
-};
-
 int main()
 {
-	Queue<int> Q;
-	Q.enqueue(10);
-	Q.enqueue(20);
-	Q.enqueue(30);
-	Q.dequeue();
+	queue<int> Q;
+	Q.push(10);
+	Q.push(20);
+	Q.push(30);
+	Q.pop();
 
 	cout << Q.front() << endl;
-	Q.enqueue(40);
+	Q.push(40);
 
 	while (!Q.empty())
 	{
 		const auto& e = Q.front();
 		cout << e << " ";
-		Q.dequeue();
+		Q.pop();
 	}
 
 	return 0;

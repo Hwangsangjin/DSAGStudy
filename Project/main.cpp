@@ -1,44 +1,23 @@
 ﻿#include <iostream>
-#include <vector>
-#include <algorithm>
 
-template <typename T>
-void PrintVector(const std::vector<T>& vec)
+void Hanoi(int n, int from, int to, int by)
 {
-	for (const auto e : vec)
+	if (n == 1)
 	{
-		std::cout << e << " ";
+		std::cout << from << " -> " << to << std::endl;
 	}
-	std::cout << std::endl;
-}
-
-void Permutation(std::vector<int>& vec, int k)
-{
-	if (k == vec.size() - 1)
+	else
 	{
-		PrintVector(vec);
-		return;
-	}
-
-	for (int i = k; i < vec.size(); i++)
-	{
-		std::swap(vec[k], vec[i]);
-		Permutation(vec, k + 1);
-		std::swap(vec[k], vec[i]);
+		Hanoi(n - 1, from, by, to);
+		std::cout << from << " -> " << to << std::endl;
+		Hanoi(n - 1, by, to, from);
 	}
 }
 
 int main()
 {
-	std::vector<int> vec{1, 2, 3, 4};
-	Permutation(vec, 0);
-
-	/*std::sort(vec.begin(), vec.end());
-
-	do
-	{
-		PrintVector(vec);
-	} while (std::next_permutation(vec.begin(), vec.end()));*/
+	//Hanoi(2, 1, 3, 2);
+	Hanoi(3, 1, 3, 2);
 
 	return 0;
 }

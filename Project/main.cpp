@@ -1,22 +1,24 @@
 ﻿#include <iostream>
 
-long long Factorial(int n)
+long long Fibonacci(int n)
 {
-	if (n == 0)
+	if (n <= 1)
 	{
-		return 1;
+		return n;
 	}
 	else
 	{
-		return n * Factorial(n - 1);
+		return Fibonacci(n - 1) + Fibonacci(n - 2);
 	}
 }
 
 int main()
 {
-	std::cout << Factorial(5) << std::endl;
-	std::cout << Factorial(10) << std::endl;
-	std::cout << Factorial(20) << std::endl;
+	for (int i = 1; i <= 10; i++)
+	{
+		std::cout << Fibonacci(i) << " ";
+	}
+	std::cout << std::endl;
 
 	return 0;
 }

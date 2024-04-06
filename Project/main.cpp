@@ -1,21 +1,22 @@
 ﻿#include <iostream>
 
-int Sum(int n)
+long long Factorial(int n)
 {
-	if (n == 1)
+	if (n == 0)
 	{
 		return 1;
 	}
 	else
 	{
-		return n + Sum(n - 1);
+		return n * Factorial(n - 1);
 	}
 }
 
 int main()
 {
-	int result = Sum(5);
-	std::cout << result << std::endl;
+	std::cout << Factorial(5) << std::endl;
+	std::cout << Factorial(10) << std::endl;
+	std::cout << Factorial(20) << std::endl;
 
 	return 0;
 }

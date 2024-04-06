@@ -1,21 +1,33 @@
 ﻿#include <iostream>
-#include <string>
+#include <numeric>
 
-std::string Reverse(const std::string& str)
+int GCD(int a, int b)
 {
-	if (str.length() == 0)
+	if (b == 0)
 	{
-		return "";
+		return a;
 	}
 	else
 	{
-		return Reverse(str.substr(1)) + str[0];
+		return GCD(b, a % b);
 	}
+}
+
+int LCM(int a, int b)
+{
+	return a * b / GCD(a, b);
 }
 
 int main()
 {
-	std::cout << Reverse("Hello") << std::endl;
+	int gcd1 = GCD(10, 15);
+	int lcm1 = LCM(10, 15);
+
+	constexpr int gcd2 = std::gcd(10, 15);
+	constexpr int lcm2 = std::lcm(10, 15);
+
+	std::cout << gcd1 << ", " << gcd2 << std::endl;
+	std::cout << lcm1 << ", " << lcm2 << std::endl;
 
 	return 0;
 }

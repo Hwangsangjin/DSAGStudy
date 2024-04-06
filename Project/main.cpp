@@ -1,33 +1,44 @@
 ﻿#include <iostream>
-#include <numeric>
+#include <vector>
+#include <algorithm>
 
-int GCD(int a, int b)
+template <typename T>
+void PrintVector(const std::vector<T>& vec)
 {
-	if (b == 0)
+	for (const auto e : vec)
 	{
-		return a;
+		std::cout << e << " ";
 	}
-	else
-	{
-		return GCD(b, a % b);
-	}
+	std::cout << std::endl;
 }
 
-int LCM(int a, int b)
+void Permutation(std::vector<int>& vec, int k)
 {
-	return a * b / GCD(a, b);
+	if (k == vec.size() - 1)
+	{
+		PrintVector(vec);
+		return;
+	}
+
+	for (int i = k; i < vec.size(); i++)
+	{
+		std::swap(vec[k], vec[i]);
+		Permutation(vec, k + 1);
+		std::swap(vec[k], vec[i]);
+	}
 }
 
 int main()
 {
-	int gcd1 = GCD(10, 15);
-	int lcm1 = LCM(10, 15);
+	std::vector<int> vec{1, 2, 3, 4};
+	Permutation(vec, 0);
 
-	constexpr int gcd2 = std::gcd(10, 15);
-	constexpr int lcm2 = std::lcm(10, 15);
+	/*std::sort(vec.begin(), vec.end());
 
-	std::cout << gcd1 << ", " << gcd2 << std::endl;
-	std::cout << lcm1 << ", " << lcm2 << std::endl;
+	do
+	{
+		PrintVector(vec);
+	} while (std::next_permutation(vec.begin(), vec.end()));*/
 
 	return 0;
 }

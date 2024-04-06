@@ -1,24 +1,21 @@
 ﻿#include <iostream>
+#include <string>
 
-long long Fibonacci(int n)
+std::string Reverse(const std::string& str)
 {
-	if (n <= 1)
+	if (str.length() == 0)
 	{
-		return n;
+		return "";
 	}
 	else
 	{
-		return Fibonacci(n - 1) + Fibonacci(n - 2);
+		return Reverse(str.substr(1)) + str[0];
 	}
 }
 
 int main()
 {
-	for (int i = 1; i <= 10; i++)
-	{
-		std::cout << Fibonacci(i) << " ";
-	}
-	std::cout << std::endl;
+	std::cout << Reverse("Hello") << std::endl;
 
 	return 0;
 }

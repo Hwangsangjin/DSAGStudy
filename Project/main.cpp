@@ -1,74 +1,56 @@
 ﻿#include <iostream>
-#include <algorithm>
 
-void BubbleSort(int data[], int n)
+int buff[256];
+
+void Merge(int data[], int left, int mid, int right)
 {
-	// data[n-1]부터 data[i]까지 이동하면서
-	// 인접한 두 원소를 비교 & 교환
-	for (int i = 0; i < n - 1; i++)
+	int i = left, j = mid + 1, k = left;
+
+	while (i <= mid && j <= right)
 	{
-		for (int j = n - 1; j > i; j--)
+		if (data[i] <= data[j])
 		{
-			if (data[j] < data[j - 1])
-			{
-				std::swap(data[j], data[j - 1]);
-			}
+			buff[k++] = data[i++];
 		}
+		else
+		{
+			buff[k++] = data[j++];
+		}
+	}
+
+	while (i <= mid)
+	{
+		buff[k++] = data[i++];
+	}
+
+	while (j <= right)
+	{
+		buff[k++] = data[j++];
+	}
+
+	for (int x = left; x <= right; x++)
+	{
+		data[x] = buff[x];
 	}
 }
 
-void SelectionSort(int data[], int n)
+void MergeSort(int data[], int left, int right)
 {
-	// data[i], data[i+1], ..., data[n-1]에 대해
-	// 최소값을 갖는 인덱스(idx)를 알아낸 후,
-	// data[i]와 data[idx]를 교환
-	for (int i = 0; i < n - 1; i++)
+	if (left < right)
 	{
-		int idx = i;
-
-		for (int j = i + 1; j < n; j++)
-		{
-			if (data[j] < data[idx])
-			{
-				idx = j;
-			}
-
-			std::swap(data[i], data[idx]);
-		}
-	}
-}
-
-void InsertionSort(int data[], int n)
-{
-	// data[i]를 임시 변수(key)에 복사한 후,
-	// data[i-1]부터 data[0]까지 차례로 검사하면서
-	// key를 삽입하기에 적절한 위치를 찾을 때까지
-	// 각각의 원소 값을 오른쪽 원소로 복사하고,
-	// 적절한 위치에 key 값을 삽입(복사)
-	for (int i = 1; i < n; i++)
-	{
-		int key = data[i];
-		int j = i - 1;
-
-		while (j >= 0 && data[j] > key)
-		{
-			data[j + 1] = data[j];
-			j--;
-		}
-
-		data[j + 1] = key;
+		int mid = (left + right) / 2;
+		MergeSort(data, left, mid);
+		MergeSort(data, mid + 1, right);
+		Merge(data, left, mid, right);
 	}
 }
 
 int main()
 {
-	int data[] = {4, 2, 3, 5, 1};
+	int data[] = {2, 6, 7, 4, 1, 8, 5, 3};
+	MergeSort(data, 0, 7);
 
-	//BubbleSort(data, 5);
-	//SelectionSort(data, 5);
-	InsertionSort(data, 5);
-
-	for (const auto& n : data)
+	for (const auto n : data)
 	{
 		std::cout << n << " ";
 	}

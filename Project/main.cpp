@@ -1,54 +1,51 @@
 ﻿#include <iostream>
+#include <algorithm>
 
-int buff[256];
-
-void Merge(int data[], int left, int mid, int right)
+int Partition(int data[], int left, int right)
 {
-	int i = left, j = mid + 1, k = left;
+	int pivot = data[left];
+	int i = left + 1, j = right;
 
-	while (i <= mid && j <= right)
+	while (true)
 	{
-		if (data[i] <= data[j])
+		while (data[i] <= pivot && i <= right)
 		{
-			buff[k++] = data[i++];
+			i++;
+		}
+
+		while (data[j] > pivot && j > left)
+		{
+			j--;
+		}
+		
+		if (i < j)
+		{
+			std::swap(data[i], data[j]);
 		}
 		else
 		{
-			buff[k++] = data[j++];
+			break;
 		}
 	}
 
-	while (i <= mid)
-	{
-		buff[k++] = data[i++];
-	}
-
-	while (j <= right)
-	{
-		buff[k++] = data[j++];
-	}
-
-	for (int x = left; x <= right; x++)
-	{
-		data[x] = buff[x];
-	}
+	std::swap(data[left], data[j]);
+	return j;
 }
 
-void MergeSort(int data[], int left, int right)
+void QuickSort(int data[], int left, int right)
 {
 	if (left < right)
 	{
-		int mid = (left + right) / 2;
-		MergeSort(data, left, mid);
-		MergeSort(data, mid + 1, right);
-		Merge(data, left, mid, right);
+		int p = Partition(data, left, right);
+		QuickSort(data, left, p - 1);
+		QuickSort(data, p + 1, right);
 	}
 }
 
 int main()
 {
-	int data[] = {2, 6, 7, 4, 1, 8, 5, 3};
-	MergeSort(data, 0, 7);
+	int data[] = {5, 6, 7, 3, 1, 9, 2, 4, 8};
+	QuickSort(data, 0, std::size(data) - 1);
 
 	for (const auto n : data)
 	{
